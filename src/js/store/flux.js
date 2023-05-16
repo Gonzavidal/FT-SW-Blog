@@ -1,45 +1,142 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
-		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+	  store: {
+		people: [],
+		planets: [],
+		vehicles: [],
+		onecharacter: {},
+		oneplanet: {},
+		onevehicle: {},
+		favs: [],
+	  },
+	  actions: {
+		getpeople: () => {
+		  fetch("https://www.swapi.tech/api/people", {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ people: data.results }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
 		},
-		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+		getplanets: () => {
+		  fetch("https://www.swapi.tech/api/planets", {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ planets: data.results }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
+		},
+		getvehicles: () => {
+		  fetch("https://www.swapi.tech/api/vehicles", {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
-
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ vehicles: data.results }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
+		},
+		getonecharacter: (uid) => {
+		  fetch("https://www.swapi.tech/api/people/" + uid, {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ onecharacter: data.result.properties }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
+		},
+		getoneplanet: (uid) => {
+		  fetch("https://www.swapi.tech/api/planets/" + uid, {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ oneplanet: data.result.properties }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
+		},
+		getonevehicle: (uid) => {
+		  fetch("https://www.swapi.tech/api/vehicles/" + uid, {
+			method: "GET",
+			headers: {
+			  "Content-Type": "application/json",
+			},
+		  })
+			.then((resp) => {
+			  return resp.json(); // (returns promise) will try to parse the result as json as return a promise that you can .then for results
+			})
+			.then((data) => {
+			  //here is were your code should start after the fetch finishes
+			  setStore({ onevehicle: data.result.properties }); //this will print on the console the exact object received from the server
+			})
+			.catch((error) => {
+			  //error handling
+			  console.log(error);
+			});
+		},
+		favorites: (fav) => {
+		  let favorites = getStore().favs;
+		  if (favorites.includes(fav)) {
+			console.log("ENTRA")
+			setStore({favs:favorites.filter((value)=> value != fav )})
+			
+		  }else{
+			setStore({favs: [...favorites, fav]})
+		  }
+		},
+	  },
 	};
-};
-
-export default getState;
+  };
+  
+  export default getState;
+  
