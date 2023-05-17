@@ -20,9 +20,12 @@ export const Vehicles = () => {
             <div className="card-body">
               <h5 className="card-title">{value.name}</h5>
             </div>
-            <Link to={"/singlevehicle/"+ value.uid} className="btn btn-primary">
-              Go somewhere
+            <div className="d-flex justify-content-between p-2">
+            <Link to={"/singlevehicle/"+ value.uid} className="btn btn-warning text-dark">
+            This is the Way
             </Link>
+            <button type="button" className="btn btn-warning" onClick={()=>{actions.favorites(value.name)}}><i className="far fa-heart text-dark" style={{color: "#ffd43b"}}></i></button>
+            </div>
           </div>
         );
       })}
